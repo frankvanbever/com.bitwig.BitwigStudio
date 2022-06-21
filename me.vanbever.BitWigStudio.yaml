@@ -1,5 +1,5 @@
 ---
-app-id: com.bitwig.BitwigStudio
+app-id: me.vanbever.BitwigStudio
 command: bitwig-studio
 runtime-version: "21.08"
 runtime: org.freedesktop.Platform
@@ -67,6 +67,20 @@ add-extensions:
     enable-if: active-gl-driver
 
 modules:
+  - name: "libbz2"
+    no-autogen: true
+    make-args:
+      - "--f=Makefile-libbz2_so"
+      - "PREFIX=${FLATPAK_DEST}"
+    no-make-install: true
+    post-install:
+      - mkdir -p ${FLATPAK_DEST}/lib/
+      - mv libbz2.so.1.0.8 ${FLATPAK_DEST}/lib/
+      - ln -s ${FLATPAK_DEST}/lib/libbz2.so.1.0.8 ${FLATPAK_DEST}/lib/libbz2.so.1.0
+    sources:
+      - type: "archive"
+        url: https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+        sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
   - name: "bitwig-studio"
     buildsystem: simple
     build-options:
@@ -82,9 +96,9 @@ modules:
       - install -d /app/lib/i386-linux-gnu
     sources:
       - type: file
-        url: https://www.bitwig.com/dl/?id=481&os=installer_linux
+        url: https://www.bitwig.com/dl/?id=388&os=installer_linux
         dest-filename: bitwig-studio.deb
-        sha512: ea8cca18af462e24e8999e8fdb874f1cd2c720af1f2e98055bd10b35a6ec205657a7b04c1cceadbb25cdac754a7743d92e472cd42575a36afaab20886cd399e1
+        sha512: 0025b20fc8bfe459f5c5acb25226d3ef507a032577580ed3eb99500c9bdec291b0468a13de272a37ed4e50c2423d144cdf8b1fa89dc6a064d1a1a271b33ce38a
         only-arches:
           - x86_64
 
